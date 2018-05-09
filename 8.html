@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>曲线图</title>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #main{
+            width: 50%;
+            height: 50%;
+            position: absolute;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="main"></div>
+    <script src="js/echarts/echarts.min.js"></script>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+        // 指定图表的配置项和数据
+/*        var option = {
+            title: {
+                text: 'ECharts 入门示例'
+            },
+            tooltip: {},
+            legend: {
+                data:['销量']
+            },
+            xAxis: {
+                data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+            },
+            yAxis: {},
+            series: [{
+                name: '销量',
+                type: 'bar',
+                data: [5, 20, 36, 10, 10, 20]
+            }]
+        };*/
+
+
+
+        // var color = '#075480';
+        var splitLineColor = '#075480';
+        var color = '#FFFFFF';
+        var lineColor = '#0a324b';
+        var xAxisData = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+        // var seriesData = [45, 55, 70, 95, 55, 70, 85];
+        var scale = 0.8;
+        var echartData = {
+            data1: [{
+                name: '',
+                value: 75
+            }, {
+                name: '',
+                value: 95
+            }, {
+                name: '',
+                value: 70
+            }, {
+                name: '',
+                value: 95
+            }, {
+                name: '',
+                value: 65
+            }, {
+                name: '',
+                value: 70
+            }, {
+                name: '',
+                value: 80
+            }, {
+                name: '',
+                value: 65
+            }, {
+                name: '',
+                value: 70
+            }, {
+                name: '',
+                value: 65
+            }, {
+                name: '',
+                value: 70
+            }, {
+                name: '',
+                value: 80
+            }],
+            data2: [{
+                name: '',
+                value: 85
+            }, {
+                name: '',
+                value: 75
+            }, {
+                name: '',
+                value: 80
+            }, {
+                name: '',
+                value: 85
+            }, {
+                name: '',
+                value: 55
+            }, {
+                name: '',
+                value: 83
+            }, {
+                name: '',
+                value: 85
+            }, {
+                name: '',
+                value: 85
+            }, {
+                name: '',
+                value: 75
+            }, {
+                name: '',
+                value: 80
+            }, {
+                name: '',
+                value: 85
+            }, {
+                name: '',
+                value: 55
+            }]
+        };
+        var maxData = '55%';
+        //线的item样式
+        var lineItemStyle = {
+            normal: {
+                lineStyle:{
+                    width:1
+                },
+                areaStyle: {type: 'default'}
+            }
+        };
+
+        var option = {
+            tooltip: {
+                show: true, //去除面板显示
+                trigger: 'axis',
+                axisPointer: {
+/*                    'line' 直线指示器
+                    'shadow' 阴影指示器
+                    'cross' 十字准星指示器。其实是种简写，表示启用两个正交的轴的 axisPointer。*/
+                    type: 'shadow',
+                    label: {
+                        backgroundColor: '#185164'
+                    }
+                }
+            },
+            legend: {//图例组件
+                show: true,
+                right:40,
+                top:10,
+                itemGap:10,
+                data: ['全市公交', '公交专用通道'],
+                icon: 'circle',
+                itemWidth:20,
+                itemHeight:9,
+                textStyle: {
+                    color: '#ffffff',
+                    // fontSize:16*scale,
+                    fontSize:14*scale,
+                    // height:50,
+                    // padding: [0, 0, 600, 0]
+                },
+            },
+            backgroundColor: '#000103',
+            // color: ['#295beb', '#eb297d','#ffc72b'], //3dd3f8
+            color: ['#4DADD7','#B42D34'], //3dd3f8
+            grid: {//直角坐标系内绘图网格
+                left: '3%',
+                right: '10%',
+                top:'25%',
+                bottom: '20%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                axisLabel: {
+                    textStyle: {
+                        color: color,
+                        fontSize: 16*scale
+                    },
+                    // rich: {
+                    //     x: {
+                    //         fontSize: 18,
+                    //         fontFamily: 'Microsoft YaHei',
+                    //         borderColor: '#449933',
+                    //         borderRadius: 4
+                    //     }
+                    // }
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: "#83B159"
+                    }
+                },
+                // splitLine: {
+                //     show: true,
+                //     lineStyle:{
+                //         color: lineColor
+                //     }
+                // },
+                // name: '月',
+                nameTextStyle: {
+                    color: color,
+                    fontSize: 16*scale,
+                    padding: [0, 0, 0, 10]
+                },
+                data: xAxisData
+            },
+            yAxis: {
+                type: 'value',
+                max: 100,
+                axisLabel: {
+                    padding: [0, 15, 0, 0],
+                    textStyle: {
+                        color: color,
+                        fontSize: 16*scale
+                    }
+                },
+                axisLine: {
+                    show: false,
+                    lineStyle: {
+                        color: lineColor
+                    }
+                },
+                splitLine: {
+                    show: true,
+                    lineStyle:{
+                        color: lineColor
+                    }
+                },
+                // splitLine: {
+                //     show: false
+                // },
+                name: '万人',
+                nameTextStyle: {
+                    color: color,
+                    fontSize: 16*scale,
+                    // padding: [0, 0, -25, 0]
+                    padding: [0, 60, -220, 0]//表示 [上, 右, 下, 左] 的边距。
+                }
+            },
+            series: [{
+                name: '全市公交',
+                type: 'line',
+                smooth: true, //这句就是让曲线变平滑的
+                data: echartData.data1,
+                symbol: 'none', //拐点样式
+                itemStyle: lineItemStyle,
+                areaStyle: {
+                    normal: {
+                        // color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                        //     offset: 0,
+                        //     color: 'rgba(137, 189, 27, 0.3)'
+                        // }, {
+                        //     offset: 0.8,
+                        //     color: 'rgba(137, 189, 27, 0)'
+                        // }], false),
+                        color: 'rgba(78,177,218, 0.8)',
+                        // opacity:1
+                    }
+                },
+                /*markPoint: {
+                    data: [
+                        {
+                            symbol: 'circle',
+                            type: 'max',
+                            symbolSize: [5, 5],
+                            itemStyle: {
+                                normal: {
+                                    color: "#FF9E0C",
+                                    borderColor: 'rgba(255,157,11, 0.3)',//rgba(255, 199, 43, .3)
+                                    borderWidth: 10 * scale,
+                                    shadowColor: '#FF9E0C',
+                                    shadowBlur: 30,
+                                }
+                            },
+                            label: {
+                                normal: {
+                                    show: false
+                                }
+                            }
+                        }]
+                }*/
+            },
+                {
+                    name: '公交专用通道',
+                    type: 'line',
+                    smooth: true, //这句就是让曲线变平滑的
+                    data: echartData.data2,
+                    symbol: 'none', //拐点样式
+                    itemStyle: lineItemStyle,
+                    areaStyle: {
+                        normal: {
+                            // color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            //     offset: 0,
+                            //     color: 'rgba(137, 189, 27, 0.3)'
+                            // }, {
+                            //     offset: 0.8,
+                            //     color: 'rgba(137, 189, 27, 0)'
+                            // }], false),
+                            color: 'rgba(180,45,52, 0.8)',
+                            // shadowColor: 'rgba(0, 0, 0, 0.1)',
+                            // shadowBlur: 10
+                        }
+                    },
+                   /* markPoint: {
+                        data: [
+                            {
+                                symbol:'circle',
+                                type: 'max',
+                                symbolSize: [5, 5],
+                                itemStyle: {
+                                    normal: {
+                                        color: "#FF9E0C",
+                                        borderColor:'rgba(255,157,11, 0.3)',//rgba(255, 199, 43, .3)
+                                        borderWidth:10*scale,
+                                        shadowColor:'#FF9E0C',
+                                        shadowBlur:30,
+                                    }
+                                },
+                                label: {
+                                    normal: {
+                                        show: false
+                                    }
+                                }
+                            }]
+                    },*/
+                    /*                lineStyle:{
+                                        color:"#ffffff",
+                                        width:10,
+                                        type:'dotted'
+                                    }*/
+
+                }
+            ]
+        };
+
+
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+</body>
+</html>
