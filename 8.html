@@ -175,7 +175,7 @@
             grid: {//直角坐标系内绘图网格
                 left: '3%',
                 right: '10%',
-                top:'25%',
+                top:'20%',
                 bottom: '20%',
                 containLabel: true
             },
@@ -248,6 +248,31 @@
                     padding: [0, 60, -220, 0]//表示 [上, 右, 下, 左] 的边距。
                 }
             },
+            dataZoom: [{
+                show: true,
+                height: 20,
+                xAxisIndex: [
+                    0
+                ],
+                bottom: 20,
+                start: 10,
+                end: 80,
+                handleIcon: 'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
+                handleSize: '110%',
+                handleStyle:{
+                    // color:"#d3dee5"
+                    color:"#0C489C"
+                },
+                textStyle:{
+                    color:"#fff"},
+                borderColor:"#0F1A32"
+            }, {
+                type: "inside",
+                show: true,
+                height: 15,
+                start: 1,
+                end: 35
+            }],
             series: [{
                 name: '全市公交',
                 type: 'line',
