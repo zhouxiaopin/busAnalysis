@@ -21,6 +21,35 @@
     <script type="text/javascript">
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('main'));
+        var scale = 1;
+        var rich = {
+            paleGreen: {
+                color: "#13B1B1",
+                align: 'center',
+                fontSize: 16 * scale,
+                padding: [10, 0]
+            },
+            white: {
+                color: "#ffffff",
+                fontSize: 14 * scale,
+                padding: [2, 0],
+                align: 'left'
+            },
+/*            hr: {
+                borderColor: '#0b5263',
+                width: '100%',
+                borderWidth: 1,
+                height: 0,
+            }*/
+        };
+        var echartData = [
+            {value:25, name:'支付宝'},
+            {value:20, name:'微信'},
+            {value:15, name:'银联'},
+            {value:10, name:'其他'},
+            {value:35, name:'羊城通'}
+        ];
+
         // 指定图表的配置项和数据
         var option = {
             title : {
@@ -32,11 +61,11 @@
                 trigger: 'item',
                 formatter: "{a} <br/>{b} : {c} ({d}%)"
             },
-            legend: {
-                x : 'center',
-                y : 'bottom',
-                data:['支付宝','微信','银联','羊城通','其他']
-            },
+            // legend: {
+            //     x : 'center',
+            //     y : 'bottom',
+            //     data:['支付宝','微信','银联','羊城通','其他']
+            // },
             calculable : true,
             series : [
                 {
@@ -45,23 +74,84 @@
                     // radius : [30, 110],
                     // center : ['75%', '50%'],
                     roseType : 'area',
+                    itemStyle: {
+                        normal: {
+                            color: function (obj) {
+                                var colors;
+                                switch (obj.dataIndex){
+                                    case 0:
+                                        colors = [
+                                            {offset: 0, color: '#1BB5FB'},
+                                            {offset: 1, color: '#ffffff'}
+                                            ];
+                                        break;
+                                    case 1:
+                                        colors = [
+                                            {offset: 0, color: '#FFED3B'},
+                                            {offset: 1, color: '#ffffff'}
+                                        ];
+                                        break;
+                                    case 2:
+                                        colors = [
+                                            {offset: 0, color: '#158B4D'},
+                                            {offset: 1, color: '#ffffff'}
+                                        ];
+                                        break;
+                                    case 3:
+                                        colors = [
+                                            {offset: 0, color: '#FEAC4D'},
+                                            {offset: 1, color: '#ffffff'}
+                                        ];
+                                        break;
+                                    case 4:
+                                        colors = [
+                                            {offset: 0, color: '#FF2928'},
+                                            {offset: 1, color: '#ffffff'}
+                                        ];
+                                        break;
+                                    default:
+                                        colors = [
+                                            {offset: 0, color: '#1BB5FB'},
+                                            {offset: 1, color: '#ffffff'}
+                                        ];
+                                        break;
+                                }
+                                return new echarts.graphic.LinearGradient(
+                                    0, 0, 0, 1,colors
+                                );
+                            }
+                        }
+                    },
                     label: {
                         normal: {
 //                            formatter: "{b} : {c}万次 {d}%",
 //                             formatter: "{b} : {d}%",
-                            formatter:  "{b} \n次数: {c}人次 \n所占百分比：{d}%",
+//                             formatter:  "{b} \n次数: {c}人次 \n所占百分比：{d}%",
+                            formatter: function(params, ticket, callback) {
+                                var total = 0; //总数量
+                                var percent = 0; //占比
+                                echartData.forEach(function(value, index, array) {
+                                    total += value.value;
+                                });
+                                percent = ((params.value / total) * 100).toFixed(1);
+                                // return '{white|' + params.name + '}\n{hr|}\n{yellow|' + params.value + '}\n{blue|' + percent + '%}';
+                                return '{paleGreen|' + params.name + '}\n{white|次数：' + params.value + '次}\n{white|所占百分比：' + percent + '%}';
+                            },
                             // textStyle: {
                             //     color: 'rgba(255, 255, 255, 1)'
                             // },
                             position: 'outer',
-                            borderColor:'rgba(2,12,22, 0.3)',//rgba(255, 199, 43, .3)
-                            borderWidth:40,
-                            shadowColor:'#020C16',
-                            borderRadius:0.5,
-                            shadowBlur:30,
+                            backgroundColor:'rgba(0,0,0, 0.8)',
+                            // borderColor:'rgba(2,12,22, 0.3)',//rgba(255, 199, 43, .3)
+                            borderWidth:1,
+                            // shadowColor:'#020C16',
+                            borderRadius:10,
+                            // shadowBlur:30,
                             textStyle:{
                                 color:"#ffffff"
-                            }
+                            },
+                            rich:rich,
+                            padding: [10, 10],
                             // borderColor:'#ff0000',
                             // borderWidth:'30'
                         }
@@ -71,16 +161,10 @@
                     //         show: false
                     //     }
                     // },
-                    data:[
-                        {value:10, name:'支付宝'},
-                        {value:15, name:'微信'},
-                        {value:25, name:'银联'},
-                        {value:20, name:'羊城通'},
-                        {value:35, name:'其他'}
-                    ]
+                    data:echartData
                 }
-            ],
-            color:['#FF2928', '#1BB5FB','#FFED3B','#158B4D','#FEAC4D']
+            ]
+            // color:['#1BB5FB','#FFED3B','#158B4D','#FEAC4D','#FF2928']
         };
 
         // 使用刚指定的配置项和数据显示图表。
