@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>广州公交路线 - 线特效</title>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #main{
+            width: 100%;
+            height: 100%;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <div id="main"></div>
+    <script src="js/echarts/echarts.min.js"></script>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+        // 指定图表的配置项和数据
+        var option = {
+            backgroundColor: 'rgba(0,0,0,0.8)',
+            // title: {
+
+            //     textStyle: {
+            //         color: '#00FFFF',
+            //         fontSize: 24
+            //     }
+            // },
+            legend: {
+                top: 20,
+                textStyle: {
+                    color: '#fff',
+                },
+                data: ['男', '女']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '10%',
+                containLabel: true
+            },
+
+            tooltip: {
+                show: "true",
+                trigger: 'item',
+                backgroundColor: 'rgba(0,0,0,0.7)', // 背景
+                padding: [8, 10], //内边距
+                extraCssText: 'box-shadow: 0 0 3px rgba(255, 255, 255, 0.4);', //添加阴影
+                formatter: function(params) {
+                    if (params.seriesIndex == "2" || params.seriesIndex == "3") {
+                        return params.name + '<br>' + params.seriesName + ' ： 第 ' + params.value + ' 名';
+                    }
+                }
+            },
+            yAxis: {
+                type: 'value',
+                axisTick: {
+                    show: false
+                },
+                axisLine: {
+                    show: false,
+                    lineStyle: {
+                        color: '#363e83',
+                    }
+                },
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                        color: "rgba(255,255,255,0.2)",
+                    }
+                },
+                axisLabel: {
+                    textStyle: {
+                        color: 'rgba(255,255,255,0.5)',
+                        fontWeight: 'normal',
+                        fontSize: '12',
+                    },
+                },
+            },
+            xAxis: [{
+                type: 'category',
+                axisTick: {
+                    show: false
+                },
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: "rgba(255,255,255,0.5)",
+                    }
+                },
+                axisLabel: {
+                    inside: false,
+                    textStyle: {
+                        color: "rgba(255,255,255,0.9)",
+                        fontWeight: 'normal',
+                        fontSize: '12',
+                    },
+                    // formatter:function(val){
+                    //     return val.split("").join("\n")
+                    // },
+                },
+                data: ['会', '不会', '看情况','1','2','3']
+            }, {
+                type: 'category',
+                axisLine: {
+                    show: false
+                },
+                axisTick: {
+                    show: false
+                },
+                axisLabel: {
+                    show: false
+                },
+                splitArea: {
+                    show: false
+                },
+                splitLine: {
+                    show: false
+                },
+                data: ['会', '不会', '看情况','1','2','3']
+            },
+
+            ],
+            series: [{
+                type: 'bar',
+                xAxisIndex: 1,
+                zlevel: 1,
+                itemStyle: {
+                    normal: {
+                        color: 'rgba(0,0,0,0.5)',
+                        borderWidth: 0,
+                        shadowBlur: {
+                            shadowColor: 'rgba(255,255,255,0.31)',
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowOffsetY: 2,
+                        },
+                    }
+                },
+                barWidth: '10%',
+                data: [30, 30, 30,30, 30, 30]
+            }, {
+                type: 'bar',
+                xAxisIndex: 1,
+                barGap: '100%',
+                data: [30, 30, 30,30, 30, 30],
+                zlevel: 1,
+                barWidth: '10%',
+                itemStyle: {
+                    normal: {
+                        color: 'rgba(0,0,0,0.5)',
+                        borderWidth: 0,
+                        shadowBlur: {
+                            shadowColor: 'rgba(255,255,255,0.31)',
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowOffsetY: 2,
+                        },
+                    }
+                },
+            },{
+                name: '男',
+                type: 'bar',
+                itemStyle: {
+                    normal: {
+                        show: true,
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            offset: 0,
+                            color: '#50CDF6'
+                        }, {
+                            offset: 1,
+                            color: '#50CDF6'
+                        }]),
+                        barBorderRadius: 10,
+                        borderWidth: 0,
+                    }
+                },
+                zlevel: 2,
+                barWidth: '10%',
+                data: [8, 15, 10,8, 15, 10]
+            }, {
+                name: '女',
+                type: 'bar',
+                barWidth: '10%',
+                itemStyle: {
+                    normal: {
+                        show: true,
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            offset: 0,
+                            color: '#ED5655'
+                        }, {
+                            offset: 1,
+                            color: '#ED5655'
+                        }]),
+                        barBorderRadius: 10,
+                        borderWidth: 0,
+                    }
+                },
+                zlevel: 2,
+                barGap: '100%',
+                data: [8, 17, 26,8, 17, 26]
+            }]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+</body>
+</html>
