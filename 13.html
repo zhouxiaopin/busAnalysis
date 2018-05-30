@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>广州公交路线 - 线特效</title>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #main{
+            width: 100%;
+            height: 100%;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <div id="main"></div>
+    <script src="js/echarts/echarts.min.js"></script>
+    <!--<script src="js/echarts/map/china.js"></script>-->
+    <script src="js/echarts/map/guangzhou.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=fdv5gclnF2HSnNyKm4Dj3aVuLUGMLUZ1" ></script>
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/echarts/map/bmap.js"></script>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+        // 指定图表的配置项和数据
+        var geoCoordMap = {
+            '海珠区': [113.32239,23.088981],
+            '荔湾区': [113.249636,23.133386],
+            '天河区': [113.367647,23.133548],
+            '白云区': [113.277708,23.163254],
+            '黄埔区': [113.465984,23.113123],
+            '花都区': [113.226002,23.412223],
+            '番禺区': [113.392197,22.945428],
+            '南沙区': [113.532585,22.810061],
+            '萝岗区': [113.506443,23.183805],
+            '从化区': [113.590713,23.554515],
+            '增城区': [113.814096,23.269249]
+        };
+
+        //海珠区
+        var HZData = [
+            [{name:'海珠区'}, {name:'荔湾区',value:95}],
+            [{name:'海珠区'}, {name:'天河区',value:90}],
+            [{name:'海珠区'}, {name:'白云区',value:80}],
+            [{name:'海珠区'}, {name:'黄埔区',value:70}],
+            [{name:'海珠区'}, {name:'花都区',value:60}],
+            [{name:'海珠区'}, {name:'番禺区',value:50}],
+            [{name:'海珠区'}, {name:'南沙区',value:40}],
+            [{name:'海珠区'}, {name:'萝岗区',value:30}],
+            [{name:'海珠区'}, {name:'从化区',value:20}],
+            [{name:'海珠区'}, {name:'增城区',value:10}],
+            [{name:'海珠区'}, {name:'海珠区',value:0}]
+        ];
+
+        //荔湾区
+        var LWData = [
+            [{name:'荔湾区'}, {name:'海珠区',value:95}],
+            [{name:'荔湾区'}, {name:'天河区',value:90}],
+            [{name:'荔湾区'}, {name:'白云区',value:80}],
+            [{name:'荔湾区'}, {name:'黄埔区',value:70}],
+            [{name:'荔湾区'}, {name:'花都区',value:60}],
+            [{name:'荔湾区'}, {name:'番禺区',value:50}],
+            [{name:'荔湾区'}, {name:'南沙区',value:40}],
+            [{name:'荔湾区'}, {name:'萝岗区',value:30}],
+            [{name:'荔湾区'}, {name:'从化区',value:20}],
+            [{name:'荔湾区'}, {name:'增城区',value:10}],
+            [{name:'荔湾区'}, {name:'荔湾区',value:0}]
+        ];
+        //天河区
+        var THData = [
+            [{name:'天河区'}, {name:'海珠区',value:95}],
+            [{name:'天河区'}, {name:'荔湾区',value:90}],
+            [{name:'天河区'}, {name:'白云区',value:80}],
+            [{name:'天河区'}, {name:'黄埔区',value:70}],
+            [{name:'天河区'}, {name:'花都区',value:60}],
+            [{name:'天河区'}, {name:'番禺区',value:50}],
+            [{name:'天河区'}, {name:'南沙区',value:40}],
+            [{name:'天河区'}, {name:'萝岗区',value:30}],
+            [{name:'天河区'}, {name:'从化区',value:20}],
+            [{name:'天河区'}, {name:'增城区',value:10}]
+        ];
+        //白云区
+        var BYData = [
+            [{name:'白云区'}, {name:'海珠区',value:95}],
+            [{name:'白云区'}, {name:'荔湾区',value:90}],
+            [{name:'白云区'}, {name:'天河区',value:80}],
+            [{name:'白云区'}, {name:'黄埔区',value:70}],
+            [{name:'白云区'}, {name:'花都区',value:60}],
+            [{name:'白云区'}, {name:'番禺区',value:50}],
+            [{name:'白云区'}, {name:'南沙区',value:40}],
+            [{name:'白云区'}, {name:'萝岗区',value:30}],
+            [{name:'白云区'}, {name:'从化区',value:20}],
+            [{name:'白云区'}, {name:'增城区',value:10}]
+        ];
+        //黄埔区
+        var HPData = [
+            [{name:'黄埔区'}, {name:'海珠区',value:95}],
+            [{name:'黄埔区'}, {name:'荔湾区',value:90}],
+            [{name:'黄埔区'}, {name:'天河区',value:80}],
+            [{name:'黄埔区'}, {name:'白云区',value:70}],
+            [{name:'黄埔区'}, {name:'花都区',value:60}],
+            [{name:'黄埔区'}, {name:'番禺区',value:50}],
+            [{name:'黄埔区'}, {name:'南沙区',value:40}],
+            [{name:'黄埔区'}, {name:'萝岗区',value:30}],
+            [{name:'黄埔区'}, {name:'从化区',value:20}],
+            [{name:'黄埔区'}, {name:'增城区',value:10}]
+        ];
+        //花都区
+        var HDData = [
+            [{name:'花都区'}, {name:'海珠区',value:95}],
+            [{name:'花都区'}, {name:'荔湾区',value:90}],
+            [{name:'花都区'}, {name:'天河区',value:80}],
+            [{name:'花都区'}, {name:'白云区',value:70}],
+            [{name:'花都区'}, {name:'黄埔区',value:60}],
+            [{name:'花都区'}, {name:'番禺区',value:50}],
+            [{name:'花都区'}, {name:'南沙区',value:40}],
+            [{name:'花都区'}, {name:'萝岗区',value:30}],
+            [{name:'花都区'}, {name:'从化区',value:20}],
+            [{name:'花都区'}, {name:'增城区',value:10}]
+        ];
+        //番禺区
+        var PYData = [
+            [{name:'番禺区'}, {name:'海珠区',value:95}],
+            [{name:'番禺区'}, {name:'荔湾区',value:90}],
+            [{name:'番禺区'}, {name:'天河区',value:80}],
+            [{name:'番禺区'}, {name:'白云区',value:70}],
+            [{name:'番禺区'}, {name:'黄埔区',value:60}],
+            [{name:'番禺区'}, {name:'花都区',value:50}],
+            [{name:'番禺区'}, {name:'南沙区',value:40}],
+            [{name:'番禺区'}, {name:'萝岗区',value:30}],
+            [{name:'番禺区'}, {name:'从化区',value:20}],
+            [{name:'番禺区'}, {name:'增城区',value:10}]
+        ];
+        //南沙区
+        var NSData = [
+            [{name:'南沙区'}, {name:'海珠区',value:95}],
+            [{name:'南沙区'}, {name:'荔湾区',value:90}],
+            [{name:'南沙区'}, {name:'天河区',value:80}],
+            [{name:'南沙区'}, {name:'白云区',value:70}],
+            [{name:'南沙区'}, {name:'黄埔区',value:60}],
+            [{name:'南沙区'}, {name:'花都区',value:50}],
+            [{name:'南沙区'}, {name:'番禺区',value:40}],
+            [{name:'南沙区'}, {name:'萝岗区',value:30}],
+            [{name:'南沙区'}, {name:'从化区',value:20}],
+            [{name:'南沙区'}, {name:'增城区',value:10}]
+        ];
+        //萝岗区
+        var LGData = [
+            [{name:'萝岗区'}, {name:'海珠区',value:95}],
+            [{name:'萝岗区'}, {name:'荔湾区',value:90}],
+            [{name:'萝岗区'}, {name:'天河区',value:80}],
+            [{name:'萝岗区'}, {name:'白云区',value:70}],
+            [{name:'萝岗区'}, {name:'黄埔区',value:60}],
+            [{name:'萝岗区'}, {name:'花都区',value:50}],
+            [{name:'萝岗区'}, {name:'番禺区',value:40}],
+            [{name:'萝岗区'}, {name:'南沙区',value:30}],
+            [{name:'萝岗区'}, {name:'从化区',value:20}],
+            [{name:'萝岗区'}, {name:'增城区',value:10}]
+        ];
+        //从化区
+        var CHData = [
+            [{name:'从化区'}, {name:'海珠区',value:95}],
+            [{name:'从化区'}, {name:'荔湾区',value:90}],
+            [{name:'从化区'}, {name:'天河区',value:80}],
+            [{name:'从化区'}, {name:'白云区',value:70}],
+            [{name:'从化区'}, {name:'黄埔区',value:60}],
+            [{name:'从化区'}, {name:'花都区',value:50}],
+            [{name:'从化区'}, {name:'番禺区',value:40}],
+            [{name:'从化区'}, {name:'南沙区',value:30}],
+            [{name:'从化区'}, {name:'萝岗区',value:20}],
+            [{name:'从化区'}, {name:'增城区',value:10}]
+        ];
+        //增城区
+        var ZCData = [
+            [{name:'增城区'}, {name:'海珠区',value:95}],
+            [{name:'增城区'}, {name:'荔湾区',value:90}],
+            [{name:'增城区'}, {name:'天河区',value:80}],
+            [{name:'增城区'}, {name:'白云区',value:70}],
+            [{name:'增城区'}, {name:'黄埔区',value:60}],
+            [{name:'增城区'}, {name:'花都区',value:50}],
+            [{name:'增城区'}, {name:'番禺区',value:40}],
+            [{name:'增城区'}, {name:'南沙区',value:30}],
+            [{name:'增城区'}, {name:'萝岗区',value:20}],
+            [{name:'增城区'}, {name:'从化区',value:10}]
+        ];
+
+        var planePath = 'path://M1705.06,1318.313v-89.254l-319.9-221.799l0.073-208.063c0.521-84.662-26.629-121.796-63.961-121.491c-37.332-0.305-64.482,36.829-63.961,121.491l0.073,208.063l-319.9,221.799v89.254l330.343-157.288l12.238,241.308l-134.449,92.931l0.531,42.034l175.125-42.917l175.125,42.917l0.531-42.034l-134.449-92.931l12.238-241.308L1705.06,1318.313z';
+
+        var convertData = function (data) {
+            var res = [];
+            for (var i = 0; i < data.length; i++) {
+                var dataItem = data[i];
+                var fromCoord = geoCoordMap[dataItem[0].name];
+                var toCoord = geoCoordMap[dataItem[1].name];
+                if (fromCoord && toCoord) {
+                    res.push([{
+                        coord: fromCoord
+                    }, {
+                        coord: toCoord
+                    }]);
+                }
+            }
+            return res;
+        };
+
+        var color = ['#a6c84c', '#ffa022', '#46bee9','#a6c84c', '#ffa022', '#46bee9','#a6c84c', '#ffa022', '#46bee9','#a6c84c', '#ffa022', '#46bee9', '#46bee9'];
+        var series = [];
+        [['海珠区',HZData],['荔湾区',LWData],['天河区',THData],['白云区',BYData],['黄埔区',HPData],['花都区',HDData],
+            ['番禺区',PYData],['南沙区',NSData],['萝岗区',LGData],['从化区',CHData],['增城区',ZCData]].forEach(function (item, i) {
+                // alert(JSON.stringify(item));
+            series.push({
+                    name: item[0],
+                    coordinateSystem: 'bmap',
+                    type: 'lines',
+                    zlevel: 1,
+                    effect: {
+                        show: true,
+                        period: 6,
+                        trailLength: 0.7,
+                        color: '#fff',
+                        symbolSize: 3
+                    },
+                    lineStyle: {
+                        normal: {
+                            color: color[i],
+                            width: 0,
+                            curveness: 0.2
+                        }
+                    },
+                    data: convertData(item[1]),
+                },
+                {
+                    name: item[0],
+                    type: 'lines',
+                    coordinateSystem: 'bmap',
+                    zlevel: 2,
+                    effect: {
+                        show: true,
+                        period: 6,
+                        trailLength: 0,
+                        symbol: planePath,
+                        symbolSize: 15
+
+                    },
+                    lineStyle: {
+                        normal: {
+                            color: color[i],
+                            width: 1,
+                            opacity: 0.4,
+                            curveness: 0.2
+                        }
+                    },
+                    data: convertData(item[1])
+                },
+                {
+                    name: item[0],
+                    type: 'effectScatter',
+                    // coordinateSystem: 'geo',
+                    coordinateSystem: 'bmap',
+                    zlevel: 2,
+                    rippleEffect: {
+                        brushType: 'stroke'
+                    },
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'right',
+                            formatter: '{b}'
+                        }
+                    },
+                    // symbolSize: function (val) {
+                    //     return val[2] / 8;
+                    // },
+                    itemStyle: {
+                        normal: {
+                            color: color[i]
+                        }
+                    },
+                    data: item[1].map(function (dataItem) {
+                        return {
+                            name: dataItem[1].name,
+                            value: geoCoordMap[dataItem[1].name].concat([dataItem[1].value])
+                        };
+                    })
+                });
+        });
+
+        var option = {
+            bmap: {
+                center: [113.3531911431, 23.1264654617],
+                // zoom: 12,
+                zoom: 11,
+                roam: true,
+                mapStyle: {
+                    'styleJson': [{
+                        'featureType': 'water',
+                        'elementType': 'all',
+                        'stylers': {
+                            'color': '#031628'
+                        }
+                    }, {
+                        'featureType': 'land',
+                        'elementType': 'geometry',
+                        'stylers': {
+                            'color': '#000102'
+                        }
+                    }, {
+                        'featureType': 'highway',
+                        'elementType': 'all',
+                        'stylers': {
+                            'visibility': 'off'
+                        }
+                    }, {
+                        'featureType': 'arterial',
+                        'elementType': 'geometry.fill',
+                        'stylers': {
+                            'color': '#000000'
+                        }
+                    }, {
+                        'featureType': 'arterial',
+                        'elementType': 'geometry.stroke',
+                        'stylers': {
+                            'color': '#0b3d51'
+                        }
+                    }, {
+                        'featureType': 'local',
+                        'elementType': 'geometry',
+                        'stylers': {
+                            'color': '#000000'
+                        }
+                    }, {
+                        'featureType': 'railway',
+                        'elementType': 'geometry.fill',
+                        'stylers': {
+                            'color': '#000000'
+                        }
+                    }, {
+                        'featureType': 'railway',
+                        'elementType': 'geometry.stroke',
+                        'stylers': {
+                            'color': '#08304b'
+                        }
+                    }, {
+                        'featureType': 'subway',
+                        'elementType': 'geometry',
+                        'stylers': {
+                            'lightness': -70
+                        }
+                    }, {
+                        'featureType': 'building',
+                        'elementType': 'geometry.fill',
+                        'stylers': {
+                            'color': '#000000'
+                        }
+                    }, {
+                        'featureType': 'all',
+                        'elementType': 'labels.text.fill',
+                        'stylers': {
+                            'color': '#857f7f'
+                        }
+                    }, {
+                        'featureType': 'all',
+                        'elementType': 'labels.text.stroke',
+                        'stylers': {
+                            'color': '#000000'
+                        }
+                    }, {
+                        'featureType': 'building',
+                        'elementType': 'geometry',
+                        'stylers': {
+                            'color': '#022338'
+                        }
+                    }, {
+                        'featureType': 'green',
+                        'elementType': 'geometry',
+                        'stylers': {
+                            'color': '#062032'
+                        }
+                    }, {
+                        'featureType': 'boundary',
+                        'elementType': 'all',
+                        'stylers': {
+                            'color': '#465b6c'
+                        }
+                    }, {
+                        'featureType': 'manmade',
+                        'elementType': 'all',
+                        'stylers': {
+                            'color': '#022338'
+                        }
+                    }, {
+                        'featureType': 'label',
+                        'elementType': 'all',
+                        'stylers': {
+                            'visibility': 'off'
+                        }
+                    }]
+                },
+            },
+            backgroundColor: '#404a59',
+            tooltip : {
+                trigger: 'item',
+                formatter:function (item) {
+                    console.log(JSON.stringify(item))
+                }
+            },
+            legend: {
+                show:false,
+                orient: 'vertical',
+                top: 'bottom',
+                left: 'right',
+                data:['海珠区','荔湾区','天河区','白云区','黄埔区','花都区','番禺区','南沙区','萝岗区','从化区','增城区'],
+                textStyle: {
+                    color: '#fff'
+                },
+                selectedMode: 'single'
+            },
+            // geo: {
+            //     // map: 'china',
+            //     map: 'guangzhou',
+            //     label: {
+            //         emphasis: {
+            //             show: false
+            //         }
+            //     },
+            //     roam: true,
+            //     itemStyle: {
+            //         normal: {
+            //             areaColor: '#323c48',
+            //             borderColor: '#404a59'
+            //         },
+            //         emphasis: {
+            //             areaColor: '#2a333d'
+            //         }
+            //     }
+            // },
+            series: series,
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+
+        myChart.on('click', function (params) {
+            // 控制台打印数据的名称
+            console.log(params.name);
+            if ('series' == params.componentType&&'effectScatter' == params.seriesType){
+                // alert(params.name)
+                myChart.dispatchAction({
+                    type: 'legendSelect',
+                    // 图例名称
+                    name: params.name
+                })
+            }
+        });
+
+        //百度地图
+        var bmap = myChart.getModel().getComponent('bmap').getBMap();
+    </script>
+</body>
+</html>
